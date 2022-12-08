@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "description": "The date+timestamp which identifies the point in time, where the information was generated, including milliseconds.",
+      "format": "date-time"
+    },
+    "locationKey": {
+      "type": "string",
+      "description": "Unique identifier of the sorting center.",
+      "maxLength": 200
+    },
+    "state": {
+      "$ref": "#/definitions/RequestState"
+    },
+    "messageId": {
+      "$ref": "#/definitions/Int",
+      "description": "The Id of the message sent by the machine. An error Id in case of an error."
+    },
+    "message": {
+      "type": "string",
+      "description": "May contain additional information on the status, e.g. error reason\r\nin case of ERROR. Messages are not meant to be processed\r\nautomatically but should just be used for problem\r\ntracking."
+    }
+  },
+  "required": [
+    "timestamp",
+    "locationKey",
+    "state"
+  ],
+  "additionalProperties": false,
+  "description": "Response of the device to a Request.",
+  "$id": "#RequestStatus",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "RequestState": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "ERROR",
+        "PROCESSING"
+      ],
+      "$id": "#RequestState"
+    },
+    "Int": {
+      "type": "integer",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#numbers\">Number @asType integer</a>"
+    }
+  }
+}

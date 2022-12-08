@@ -1,0 +1,375 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Automatic Inventory Stream API",
+    "description": "Interfaces with ASL to stop and start blocks on the feeding line in order to match a series of parcels to a transport (using a blockID).  Controls keep track of multiple parcels, referred to as a block. Controls create a gap between the different blocks. For parcels that cannot be singulated and are sent to the NiO-Workstation, the interface allows querying the current blockID.",
+    "contact": {
+      "name": "Swiss Post Sorting System Development",
+      "email": "sortdev@post.ch"
+    },
+    "version": "2.1.0"
+  },
+  "host": "server:8080",
+  "basePath": "MQTT",
+  "parameters": {
+    "sourceDestinationConversationParameters": [
+      {
+        "name": "srcSystem",
+        "in": "path",
+        "description": "3-letter uppercase name identifying the system issuing the message",
+        "type": "string",
+        "default": "MDS"
+      },
+      {
+        "name": "srcInstance",
+        "in": "path",
+        "description": "two-digit padded number identifying the system instance issuing the message",
+        "type": "string",
+        "default": "01"
+      },
+      {
+        "name": "dstSystem",
+        "in": "path",
+        "description": "3-letter uppercase name identifying the system receiving the message",
+        "type": "string",
+        "default": "ASL"
+      },
+      {
+        "name": "dstInstance",
+        "in": "path",
+        "description": "two-digit padded number identifying the system instance receiving the message",
+        "type": "string",
+        "default": "01"
+      },
+      {
+        "name": "conversationId",
+        "in": "path",
+        "description": "ID that will be included in the get-response topic in order to correlate the messages",
+        "type": "string",
+        "default": "12345"
+      }
+    ],
+    "sourceSystemInstanceParameters": [
+      {
+        "name": "srcSystem",
+        "in": "path",
+        "description": "3-letter uppercase name identifying the system issuing the message",
+        "type": "string",
+        "default": "ASL"
+      },
+      {
+        "name": "srcInstance",
+        "in": "path",
+        "description": "two-digit padded number identifying the system instance issuing the message",
+        "type": "string",
+        "default": "01"
+      }
+    ]
+  },
+  "paths": {
+    "inventory/v2/app/feedingline:start-block/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": null,
+        "description": "Used to notify the feeding line to start a new block with a gap to the previous block.",
+        "tags": [
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/definitions/undefined"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/StartBlockRequest"
+            }
+          }
+        }
+      }
+    },
+    "inventory/v2/app/feedingline:stop-block/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": null,
+        "description": "Used to notify the feeding line to stop the current block.",
+        "tags": [
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/definitions/undefined"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/StopBlockRequest"
+            }
+          }
+        }
+      }
+    },
+    "inventory/v2/machine/feedingline:start-block:status/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": null,
+        "description": "Used to notify the app of the success of the block starting. To be sent by the machine right after the reception of the start-block request once the conditions to start the gap have been met.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/definitions/undefined"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/RequestStatus"
+            }
+          }
+        }
+      }
+    },
+    "inventory/v2/machine/feedingline:stop-block:status/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": null,
+        "description": "Used to notify the app of the status of the stop. To be sent by the machine right after the reception of the stop-block request once the conditions to start the gap have been met.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/definitions/undefined"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/RequestStatus"
+            }
+          }
+        }
+      }
+    },
+    "inventory/v2/app/nio-workstation-blockid:get/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": null,
+        "description": "Used by the workstation client to request the current Block ID.",
+        "tags": [
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/definitions/undefined"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/NotInOrderWorkstationRequest"
+            }
+          }
+        }
+      }
+    },
+    "inventory/v2/machine/nio-workstation-blockid:get:status/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": null,
+        "description": "Used to notify the app of the current Block ID at the workstation.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/definitions/undefined"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/NotInOrderWorkstationRequestStatus"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Int": {
+      "type": "integer",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#numbers\">Number @asType integer</a>"
+    },
+    "UUID": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format uuid</a>\n(even '@format uuid' is not specified).",
+      "format": "uuid"
+    },
+    "NotInOrderWorkstationRequestStatus": {
+      "type": "object",
+      "properties": {
+        "blockId": {
+          "$ref": "#/definitions/UUID",
+          "description": "The active blockId at the time of the request"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The date+timestamp which identifies the point in time, where the information was generated, including milliseconds.",
+          "format": "date-time"
+        },
+        "locationKey": {
+          "type": "string",
+          "description": "Unique identifier of the sorting center.",
+          "maxLength": 200
+        },
+        "state": {
+          "$ref": "#/definitions/RequestState"
+        },
+        "messageId": {
+          "$ref": "#/definitions/Int",
+          "description": "The Id of the message sent by the machine. An error Id in case of an error."
+        },
+        "message": {
+          "type": "string",
+          "description": "May contain additional information on the status, e.g. error reason\r\nin case of ERROR. Messages are not meant to be processed\r\nautomatically but should just be used for problem\r\ntracking."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Response of the device to a Request.",
+      "required": [
+        "timestamp",
+        "locationKey",
+        "state"
+      ]
+    },
+    "DateTime": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format date-time</a>,\nas defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\">RFC 3339, section 5.6</a>,\nfor example: <code>2014-05-22T10:42:42.542+00:00</code>.",
+      "format": "date-time"
+    },
+    "NotInOrderWorkstationRequest": {
+      "type": "object",
+      "properties": {
+        "requestTimestamp": {
+          "$ref": "#/definitions/DateTime",
+          "description": "The date and time when the app requested the block ID.",
+          "format": "date-time"
+        },
+        "locationKey": {
+          "type": "string",
+          "description": "Unique identifier of the sorting center.",
+          "maxLength": 200
+        },
+        "nioWorkstationId": {
+          "type": "string",
+          "description": "The NiO-Workstation ID"
+        }
+      },
+      "required": [
+        "requestTimestamp",
+        "locationKey",
+        "nioWorkstationId"
+      ],
+      "additionalProperties": false
+    },
+    "RequestState": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "ERROR",
+        "PROCESSING"
+      ]
+    },
+    "RequestStatus": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "The date+timestamp which identifies the point in time, where the information was generated, including milliseconds.",
+          "format": "date-time"
+        },
+        "locationKey": {
+          "type": "string",
+          "description": "Unique identifier of the sorting center.",
+          "maxLength": 200
+        },
+        "state": {
+          "$ref": "#/definitions/RequestState"
+        },
+        "messageId": {
+          "$ref": "#/definitions/Int",
+          "description": "The Id of the message sent by the machine. An error Id in case of an error."
+        },
+        "message": {
+          "type": "string",
+          "description": "May contain additional information on the status, e.g. error reason\r\nin case of ERROR. Messages are not meant to be processed\r\nautomatically but should just be used for problem\r\ntracking."
+        }
+      },
+      "required": [
+        "timestamp",
+        "locationKey",
+        "state"
+      ],
+      "additionalProperties": false,
+      "description": "Response of the device to a Request."
+    },
+    "StartBlockRequest": {
+      "type": "object",
+      "properties": {
+        "startTimestamp": {
+          "$ref": "#/definitions/DateTime",
+          "description": "The date+timestamp which identifies the point in time when the app requested starting the block.",
+          "format": "date-time"
+        },
+        "locationKey": {
+          "type": "string",
+          "description": "Unique identifier of the sorting center.",
+          "maxLength": 200
+        },
+        "feedingLineId": {
+          "type": "string",
+          "description": "The id of the feeding line where the block should be started."
+        },
+        "blockId": {
+          "$ref": "#/definitions/UUID",
+          "description": "The Id of the block to be started at the feeding line."
+        }
+      },
+      "required": [
+        "startTimestamp",
+        "locationKey",
+        "feedingLineId",
+        "blockId"
+      ],
+      "additionalProperties": false
+    },
+    "StopBlockRequest": {
+      "type": "object",
+      "properties": {
+        "stopTimestamp": {
+          "$ref": "#/definitions/DateTime",
+          "description": "The date+timestamp which identifies the point in time when the app requested stopping the current block",
+          "format": "date-time"
+        },
+        "locationKey": {
+          "type": "string",
+          "description": "Unique identifier of the sorting center.",
+          "maxLength": 200
+        },
+        "feedingLineId": {
+          "type": "string",
+          "description": "The id of the feeding line where the block should be stopped"
+        },
+        "blockId": {
+          "$ref": "#/definitions/UUID",
+          "description": "The blockId of the block to be stopped. If it is empty, then the machine must stop by feedingLineId."
+        }
+      },
+      "required": [
+        "stopTimestamp",
+        "locationKey",
+        "feedingLineId"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

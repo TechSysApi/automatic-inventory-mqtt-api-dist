@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "DateTime": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format date-time</a>,\nas defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\">RFC 3339, section 5.6</a>,\nfor example: <code>2014-05-22T10:42:42.542+00:00</code>.",
+      "format": "date-time"
+    },
+    "UUID": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format uuid</a>\n(even '@format uuid' is not specified).",
+      "format": "uuid"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "startTimestamp": {
+      "$ref": "#/definitions/DateTime",
+      "description": "The date+timestamp which identifies the point in time when the app requested starting the block.",
+      "format": "date-time",
+      "required": true
+    },
+    "locationKey": {
+      "type": "string",
+      "description": "Unique identifier of the sorting center.",
+      "maxLength": 200,
+      "required": true
+    },
+    "feedingLineId": {
+      "type": "string",
+      "description": "The id of the feeding line where the block should be started.",
+      "required": true
+    },
+    "blockId": {
+      "$ref": "#/definitions/UUID",
+      "description": "The Id of the block to be started at the feeding line.",
+      "required": true
+    }
+  },
+  "required": [
+    "startTimestamp",
+    "locationKey",
+    "feedingLineId",
+    "blockId"
+  ],
+  "additionalProperties": false,
+  "$id": "#StartBlockRequest",
+  "javaType": "ch.post.app.techsys.automatic.inventory.v1.StartBlockRequest",
+  "javaInterfaces": [
+    "java.io.Serializable"
+  ],
+  "dotnetNamespace": "Ch.Post.App.Techsys.Automatic.Inventory.V1"
+}
