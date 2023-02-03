@@ -1,0 +1,22 @@
+{
+  "namespace": "NotInOrderWorkstationRequest",
+  "name": "main",
+  "type": "record",
+  "fields": [
+    {
+      "name": "requestTimestamp",
+      "doc": "The date and time when the app requested the block ID.",
+      "type": "string"
+    },
+    {
+      "name": "sortingUnitKey",
+      "doc": "Unique identifier of the sorting unit at a location.",
+      "type": "string"
+    },
+    {
+      "name": "nioWorkstationId",
+      "doc": "The NiO-Workstation ID",
+      "type": "string"
+    }
+  ]
+}

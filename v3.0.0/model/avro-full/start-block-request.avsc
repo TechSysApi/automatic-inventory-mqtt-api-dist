@@ -1,0 +1,27 @@
+{
+  "namespace": "StartBlockRequest",
+  "name": "main",
+  "type": "record",
+  "fields": [
+    {
+      "name": "startTimestamp",
+      "doc": "The date+timestamp which identifies the point in time when the app requested starting the block.",
+      "type": "string"
+    },
+    {
+      "name": "sortingUnitKey",
+      "doc": "Unique identifier of the sorting unit at a location.",
+      "type": "string"
+    },
+    {
+      "name": "feedingLineId",
+      "doc": "The id of the feeding line where the block should be started.",
+      "type": "string"
+    },
+    {
+      "name": "blockId",
+      "doc": "The Id of the block to be started at the feeding line.",
+      "type": "string"
+    }
+  ]
+}

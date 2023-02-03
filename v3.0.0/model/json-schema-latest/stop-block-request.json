@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "DateTime": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format date-time</a>,\nas defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\">RFC 3339, section 5.6</a>,\nfor example: <code>2014-05-22T10:42:42.542+00:00</code>.",
+      "format": "date-time"
+    },
+    "UUID": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format uuid</a>\n(even '@format uuid' is not specified).",
+      "format": "uuid"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "stopTimestamp": {
+      "$ref": "#/definitions/DateTime",
+      "description": "The date+timestamp which identifies the point in time when the app requested stopping the current block",
+      "format": "date-time",
+      "required": true
+    },
+    "sortingUnitKey": {
+      "type": "string",
+      "description": "Unique identifier of the sorting unit at a location.",
+      "maxLength": 200,
+      "required": true
+    },
+    "feedingLineId": {
+      "type": "string",
+      "description": "The id of the feeding line where the block should be stopped",
+      "required": true
+    },
+    "blockId": {
+      "$ref": "#/definitions/UUID",
+      "description": "The blockId of the block to be stopped. If it is empty, then the machine must stop by feedingLineId."
+    }
+  },
+  "required": [
+    "stopTimestamp",
+    "sortingUnitKey",
+    "feedingLineId"
+  ],
+  "additionalProperties": false,
+  "$id": "#StopBlockRequest",
+  "javaType": "ch.post.app.atg.automatic.inventory.v1.StopBlockRequest",
+  "javaInterfaces": [
+    "java.io.Serializable"
+  ],
+  "dotnetNamespace": "Ch.Post.App.Atg.Automatic.Inventory.V1"
+}

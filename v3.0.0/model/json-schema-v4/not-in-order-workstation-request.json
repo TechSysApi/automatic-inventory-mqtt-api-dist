@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "DateTime": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format date-time</a>,\nas defined by <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\">RFC 3339, section 5.6</a>,\nfor example: <code>2014-05-22T10:42:42.542+00:00</code>.",
+      "format": "date-time"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "requestTimestamp": {
+      "$ref": "#/definitions/DateTime",
+      "description": "The date and time when the app requested the block ID.",
+      "format": "date-time"
+    },
+    "sortingUnitKey": {
+      "type": "string",
+      "description": "Unique identifier of the sorting unit at a location.",
+      "maxLength": 200
+    },
+    "nioWorkstationId": {
+      "type": "string",
+      "description": "The NiO-Workstation ID"
+    }
+  },
+  "required": [
+    "requestTimestamp",
+    "sortingUnitKey",
+    "nioWorkstationId"
+  ],
+  "additionalProperties": false,
+  "id": "NotInOrderWorkstationRequest",
+  "javaType": "ch.post.app.atg.automatic.inventory.v1.NotInOrderWorkstationRequest",
+  "javaInterfaces": [
+    "java.io.Serializable"
+  ],
+  "dotnetNamespace": "Ch.Post.App.Atg.Automatic.Inventory.V1"
+}

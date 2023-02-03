@@ -1,0 +1,31 @@
+{
+  "namespace": "StopBlockRequest",
+  "name": "main",
+  "type": "record",
+  "fields": [
+    {
+      "name": "stopTimestamp",
+      "doc": "The date+timestamp which identifies the point in time when the app requested stopping the current block",
+      "type": "string"
+    },
+    {
+      "name": "sortingUnitKey",
+      "doc": "Unique identifier of the sorting unit at a location.",
+      "type": "string"
+    },
+    {
+      "name": "feedingLineId",
+      "doc": "The id of the feeding line where the block should be stopped",
+      "type": "string"
+    },
+    {
+      "name": "blockId",
+      "doc": "The blockId of the block to be stopped. If it is empty, then the machine must stop by feedingLineId.",
+      "default": null,
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  ]
+}

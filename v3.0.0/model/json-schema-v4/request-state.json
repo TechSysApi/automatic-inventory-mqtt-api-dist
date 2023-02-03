@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "string",
+  "enum": [
+    "OK",
+    "ERROR",
+    "PROCESSING"
+  ],
+  "id": "RequestState",
+  "javaType": "ch.post.app.atg.automatic.inventory.v1.RequestState",
+  "javaInterfaces": [
+    "java.io.Serializable"
+  ],
+  "dotnetNamespace": "Ch.Post.App.Atg.Automatic.Inventory.V1"
+}

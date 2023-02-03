@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {
+    "Int": {
+      "type": "integer",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#numbers\">Number @asType integer</a>"
+    },
+    "UUID": {
+      "type": "string",
+      "description": "<a href=\"https://swagger.io/docs/specification/data-models/data-types/#string\">String @format uuid</a>\n(even '@format uuid' is not specified).",
+      "format": "uuid"
+    }
+  },
+  "id": "NotInOrderWorkstationRequestStatus",
+  "type": "object",
+  "properties": {
+    "blockId": {
+      "$ref": "#/definitions/UUID",
+      "description": "The active blockId at the time of the request"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Response of the device to a Request.",
+  "javaType": "ch.post.app.atg.automatic.inventory.v1.NotInOrderWorkstationRequestStatus",
+  "javaInterfaces": [
+    "java.io.Serializable"
+  ],
+  "dotnetNamespace": "Ch.Post.App.Atg.Automatic.Inventory.V1",
+  "extends": {
+    "$ref": "request-status.json"
+  }
+}
